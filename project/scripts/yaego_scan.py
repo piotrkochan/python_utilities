@@ -29,21 +29,129 @@ def gen_mpns(pnbase='RC0603FR-07'):
 
     mpnlist = []
 
+    # add zero ohm jumper at the beginning
+    mpn=[]
+    mpn.append('0.0')
+    mpn.append(pnbase + '0RL')
+    mpnlist.append(mpn)
+
     # generate the first decade of resistors (between 1 and 9.76 ohms)
     for val in valuelist:
         # generate a part number for every value and check if there are hits
         mpn = []
-        mpn.append(float(val)/100)
+
         h = int(val / 100)
         t = int((val - 100 * h) / 10)
         o = (val - 100 * h - 10 * t)
 
         if (o == 0) & (t == 0):
             _mpn = pnbase + str(h) + 'RL'
+            mpn.append(str(h))
         elif (o == 0):
             _mpn = pnbase + str(h) + 'R' + str(t) + 'L'
+            mpn.append(str(h)+'.'+str(t))
         else:
             _mpn = pnbase + str(h) + 'R' + str(t) + str(o) + 'L'
+            mpn.append(str(h) + '.' + str(t) + str(o))
+
+        mpn.append(_mpn)
+
+        mpnlist.append(mpn)
+
+    # generate the second decade of resistors (between 10 and 97.6 ohms)
+    for val in valuelist:
+        # generate a part number for every value and check if there are hits
+        mpn = []
+
+        h = int(val / 100)
+        t = int((val - 100 * h) / 10)
+        o = (val - 100 * h - 10 * t)
+
+        if (o == 0):
+            _mpn = pnbase + str(h) + str(t) + 'RL'
+            mpn.append(str(h)+str(t))
+        else:
+            _mpn = pnbase + str(h) + str(t) + 'R' + str(o) + 'L'
+            mpn.append(str(h) + str(t) + '.' + str(o))
+
+        mpn.append(_mpn)
+        mpnlist.append(mpn)
+
+    # generate the third decade of resistors (between 100 and 976 ohms)
+    for val in valuelist:
+        # generate a part number for every value and check if there are hits
+        mpn = []
+        mpn.append(str(val))
+        _mpn = pnbase + str(val) + 'RL'
+        mpn.append(_mpn)
+        mpnlist.append(mpn)
+
+    # generate the fourth decade of resistors (between 1k and 9.76k ohms)
+    for val in valuelist:
+        # generate a part number for every value and check if there are hits
+        mpn = []
+        h = int(val / 100)
+        t = int((val - 100 * h) / 10)
+        o = (val - 100 * h - 10 * t)
+
+        if (o == 0) & (t == 0):
+            _mpn = pnbase + str(h) + 'KL'
+            mpn.append(str(h) + 'k')
+        elif (o == 0):
+            _mpn = pnbase + str(h) + 'K' + str(t) + 'L'
+            mpn.append(str(h) + '.' + str(t) + 'k')
+        else:
+            _mpn = pnbase + str(h) + 'K' + str(t) + str(o) + 'L'
+            mpn.append(str(h) + '.' + str(t) + str(o) + 'k')
+
+        mpn.append(_mpn)
+
+        mpnlist.append(mpn)
+
+    # generate the fifth decade of resistors (between 10k and 97.6k ohms)
+    for val in valuelist:
+        # generate a part number for every value and check if there are hits
+        mpn = []
+        h = int(val / 100)
+        t = int((val - 100 * h) / 10)
+        o = (val - 100 * h - 10 * t)
+
+        if (o == 0):
+            _mpn = pnbase + str(h) + str(t) + 'KL'
+            mpn.append(str(h) + str(t) + 'k')
+        else:
+            _mpn = pnbase + str(h) + str(t) + 'K' + str(o) + 'L'
+            mpn.append(str(h) + str(t) + '.' + str(o) + 'k')
+
+        mpn.append(_mpn)
+        mpnlist.append(mpn)
+
+    # generate the sixth decade of resistors (between 100k and 976k ohms)
+    for val in valuelist:
+        # generate a part number for every value and check if there are hits
+        mpn = []
+        mpn.append(str(val) + 'k')
+        _mpn = pnbase + str(val) + 'KL'
+        mpn.append(_mpn)
+        mpnlist.append(mpn)
+
+    # generate the seventh decade of resistors (between 1M and 9.76M ohms)
+    for val in valuelist:
+        # generate a part number for every value and check if there are hits
+        mpn = []
+        h = int(val / 100)
+        t = int((val - 100 * h) / 10)
+        o = (val - 100 * h - 10 * t)
+
+        if (o == 0) & (t == 0):
+            _mpn = pnbase + str(h) + 'ML'
+            mpn.append(str(h) + 'MEG')
+        elif (o == 0):
+            _mpn = pnbase + str(h) + 'M' + str(t) + 'L'
+            mpn.append(str(h) + '.' + str(t) + 'MEG')
+        else:
+            _mpn = pnbase + str(h) + 'M' + str(t) + str(o) + 'L'
+            mpn.append(str(h) + '.' + str(t) + str(o) + 'MEG')
 
         mpn.append(_mpn)
 
@@ -51,14 +159,7 @@ def gen_mpns(pnbase='RC0603FR-07'):
 
     return mpnlist
 
-
-
-print 'Generating MPNs ...'
-
-mpnlist = gen_mpns('RC0603FR-07')
-
-for mpn in mpnlist:
-
+def get_resistor(mpn):
     gotresponse = False
 
     while (gotresponse == False):
@@ -80,23 +181,65 @@ for mpn in mpnlist:
         # received a message, print it out
         print response['message']
 
+    rMPN = 'notfound'
+    Manufacturer = 'notfound'
+    qty_stock = -1
+    price1000 = -1
+    nsellers = -1
+    supplier = 'notfound'
+
+    # print json.dumps(response, indent=4, sort_keys=True)
+
     for result in response['results']:
         # loop over every item, grab data
-        for item in result['items']:
-            rMPN = item['mpn']
-            Manufacturer = item['manufacturer']['name']
-            for offer in item['offers']:
-                # check for digikey price and inventory stock
-                if (offer['seller']['name'] =='Digi-Key'):
-                    qty_stock = offer['in_stock_quantity']
-                    for price in offer['prices']['USD']:
-                        if (price[0]==1000):
-                            price1000 = price[1]
-            # now we print the details
-            # if (mpn[1] == rMPN):
-                # only print if the MPN is identical to the input MPN
-            print str(mpn[0]) + ',' + rMPN + ',' + Manufacturer + ',' + str(price1000) + ',' + str(qty_stock)
 
+        if (len(result['items']) > 0):
+            item = result['items'][0]
+            # for item in result['items']:
+
+            if (mpn[1]==item['mpn']):
+                rMPN = item['mpn']
+                Manufacturer = item['manufacturer']['name']
+                if len(item['offers']) > 0:
+                    nsellers = len(item['offers'])
+                    # pick the first offer
+                    offer = item['offers'][0]
+                    supplier = offer['seller']['name']
+                    qty_stock = offer['in_stock_quantity']
+
+                    for price in offer['prices']['USD']:
+                        if (price[0] >= 1000):
+                            price1000 = price[1]
+
+    # print str(mpn[0]) + ',' + rMPN + ',' + Manufacturer + ',' + str(price1000) + ',' + str(qty_stock)
+    return mpn[0],rMPN,Manufacturer,nsellers,supplier,price1000,qty_stock
 
     # add a delay for rate limiting
-    time.sleep(0.2)
+    time.sleep(0.3)
+
+def get_all_res(pak_size):
+    # queries all 1% resistors with the given size
+    # first validate the input package size
+    valid_sizes = ['0075','0100','0201','0402','0603','0805','1206','1210','1218','2010','2512']
+    if (pak_size in valid_sizes):
+        f = open('r' + pak_size + '.csv', 'w')
+        mpnlist = gen_mpns('RC' + pak_size + 'FR-07')
+        for mpn in mpnlist:
+            res = get_resistor(mpn)
+            print res
+            if (res[1] != 'notfound'):
+                for field in res:
+                    f.write(str(field) + ',')
+                f.write('\n')
+
+        f.close()
+    else:
+        print pak_size + 'is an invalid package size !!!'
+
+
+
+get_all_res('0201')
+# get_all_res('0402')
+# get_all_res('0603')
+# get_all_res('0805')
+# get_all_res('1206')
