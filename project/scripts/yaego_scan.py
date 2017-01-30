@@ -237,9 +237,8 @@ def get_all_res(pak_size):
         print pak_size + 'is an invalid package size !!!'
 
 
-
 get_all_res('0201')
-# get_all_res('0402')
-# get_all_res('0603')
-# get_all_res('0805')
-# get_all_res('1206')
+get_all_res('0402')
+get_all_res('0603')
+get_all_res('0805')
+get_all_res('1206')
