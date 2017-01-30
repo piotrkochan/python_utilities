@@ -52,7 +52,7 @@ def guide_power_rating(pak_size):
     return rating
 
 
-def gen_cell(res_props):
+def gen_cell_lib(res_props):
     # this generates the lines for resistor with the given parameters
 
     outstring = '#\n# ' + res_props[1] + '\n#\n'
@@ -61,7 +61,7 @@ def gen_cell(res_props):
     outstring += 'F1 "' + res_props[1] + '" 30 -40 28 H V L CNN\n'
     outstring += 'F2 "Main:RESC' + res_props[7] + '" 100 -75 10 H I C CNN\n'
     outstring += 'F3 "" 30 20 50 H V C CNN\n'
-    outstring += 'F4 "' + res_props[2] + '" -50 70 28 H V R CNN "Manufacturer"\n'
+    outstring += 'F4 "' + res_props[2] + '" -50 80 28 H V R CNN "Manufacturer"\n'
     outstring += 'F5 "' + res_props[1] + '" -50 40 12 H V R CNN "MPN"\n'
     outstring += 'F6 "STUFF" -50 -90 20 H V R CNN "SKU"\n'
     outstring += 'F7 "' + res_props[9] + '" -50 10 20 H V R CNN "Res"\n'
@@ -86,8 +86,24 @@ def gen_cell(res_props):
 
     return outstring
 
+def gen_cell_dcm(res_props):
+    # this generates the lines for resistor with the given parameters
+
+    outstring = '#\n'
+    outstring += '$CMP ' + res_props[1] + '\n'
+    if int(res_props[6]) > 50000:
+        common = ''
+    else:
+        common = '(UNCOMMON) '
+
+    outstring += 'D ' + common + 'RES ' + res_props[7] + ' ' + res_props[9] + ' ' + res_props[10] + '\n'
+    outstring += '$ENDCMP\n'
+
+    return outstring
 
 
+####################################################################################
+# create resistors.lib
 
 try:
     f = open('resistors.lib', 'w')
@@ -95,27 +111,56 @@ except:
     print 'Can\'t open resistors.lib for writing\n'
     sys.exit(0)
 
-cwd = os.getcwd()
-
 # now we write the kicad library file header
 f.write('EESchema-LIBRARY Version 2.3\n')
 f.write('#encoding utf-8\n')
 
-reslist = import_csv('../mine_res/r0603.csv')
+reslist = import_csv('../mine_res/r0201.csv')
+reslist += import_csv('../mine_res/r0402.csv')
+reslist += import_csv('../mine_res/r0603.csv')
+reslist += import_csv('../mine_res/r0805.csv')
+reslist += import_csv('../mine_res/r1206.csv')
 
+print reslist
 
 for res in reslist:
-    print 'printing ...'
-    f.write(gen_cell(res))
+    # print 'printing ...'
+    f.write(gen_cell_lib(res))
 
-# print firstres
 
 # write end of file
 f.write('#\n#End Library')
 
 f.close()
 
+####################################################################################
+# create resistors.dcm
+
+try:
+    f = open('resistors.dcm', 'w')
+except:
+    print 'Can\'t open resistors.dcm for writing\n'
+    sys.exit(0)
+
+# now we write the kicad library file header
+f.write('EESchema-DOCLIB  Version 2.0\n')
+f.write('#\n')
+
+reslist = import_csv('../mine_res/r0201.csv')
+reslist += import_csv('../mine_res/r0402.csv')
+reslist += import_csv('../mine_res/r0603.csv')
+reslist += import_csv('../mine_res/r0805.csv')
+reslist += import_csv('../mine_res/r1206.csv')
+
+print reslist
+
+for res in reslist:
+    # print 'printing ...'
+    f.write(gen_cell_dcm(res))
 
 
+# write end of file
+f.write('#\n#End Doc Library')
 
+f.close()
 
