@@ -1,6 +1,7 @@
 import json
 import urllib
 import time
+import sys
 
 def get_part(_mpn):
     # this function returns a JSON object based on an MPN search
@@ -190,6 +191,12 @@ def get_resistor(mpn):
 
     # pretty print json return
     # print json.dumps(response, indent=4, sort_keys=True)
+    # sys.exit(0)
+
+    case_package = '-1'
+    power_rating = '-1'
+    resistance = '-1'
+    resistance_tol = '-1'
 
     for result in response['results']:
         # loop over every item, grab data
@@ -200,20 +207,25 @@ def get_resistor(mpn):
             if (mpn[1]==item['mpn']):
                 rMPN = item['mpn']
                 Manufacturer = item['manufacturer']['name']
-                case_package = item['specs']['case_package']['display_value']
-                power_rating = item['specs']['power_rating']['display_value']
-                resistance = item['specs']['resistance']['display_value']
-                resistance_tol = item['specs']['resistance_tolerance']['display_value']
+
+                if 'case_package' in item['specs']:
+                    case_package = item['specs']['case_package']['display_value']
+
+                if 'power_rating' in item['specs']:
+                    power_rating = item['specs']['power_rating']['display_value']
+
+                resistance = item['specs']['resistance']['display_value'].encode('utf-8')
+                resistance_tol = item['specs']['resistance_tolerance']['display_value'].encode('utf-8')
                 if len(item['offers']) > 0:
-                    nsellers = len(item['offers'])
+                    nsellers = str(len(item['offers']))
                     # pick the first offer
                     offer = item['offers'][0]
                     supplier = offer['seller']['name']
-                    qty_stock = offer['in_stock_quantity']
+                    qty_stock = str(offer['in_stock_quantity'])
 
                     for price in offer['prices']['USD']:
                         if (price[0] >= 1000):
-                            price1000 = price[1]
+                            price1000 = str(price[1])
 
     # print str(mpn[0]) + ',' + rMPN + ',' + Manufacturer + ',' + str(price1000) + ',' + str(qty_stock)
     return mpn[0],rMPN,Manufacturer,nsellers,supplier,price1000,qty_stock,case_package,power_rating,resistance,resistance_tol
@@ -233,7 +245,7 @@ def get_all_res(pak_size):
             print res
             if res[1] != 'notfound':
                 for field in res:
-                    f.write(str(field) + ',')
+                    f.write(field + ',')
                 f.write('\n')
 
         f.close()
@@ -242,7 +254,7 @@ def get_all_res(pak_size):
 
 
 print 'getting resistor'
-r_req = get_resistor([0.0,'RC0603FR-070RL'])
+r_req = get_resistor([0.0,'RC0100FR-0710KL'])
 print r_req
 print r_req[9]
 print r_req[10]
