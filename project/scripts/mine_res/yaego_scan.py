@@ -5,7 +5,7 @@ import time
 def get_part(_mpn):
     # this function returns a JSON object based on an MPN search
     urlp1 = 'http://octopart.com/api/v3/parts/match?&queries=[{"mpn":"'
-    urlp2 = '"}]&apikey='
+    urlp2 = '"}]&include[]=specs&apikey='
     apikey = '1b1109c0'
     url = urlp1 + _mpn + urlp2 + apikey
     data = urllib.urlopen(url).read()
@@ -188,6 +188,7 @@ def get_resistor(mpn):
     nsellers = -1
     supplier = 'notfound'
 
+    # pretty print json return
     # print json.dumps(response, indent=4, sort_keys=True)
 
     for result in response['results']:
@@ -195,11 +196,14 @@ def get_resistor(mpn):
 
         if (len(result['items']) > 0):
             item = result['items'][0]
-            # for item in result['items']:
 
             if (mpn[1]==item['mpn']):
                 rMPN = item['mpn']
                 Manufacturer = item['manufacturer']['name']
+                case_package = item['specs']['case_package']['display_value']
+                power_rating = item['specs']['power_rating']['display_value']
+                resistance = item['specs']['resistance']['display_value']
+                resistance_tol = item['specs']['resistance_tolerance']['display_value']
                 if len(item['offers']) > 0:
                     nsellers = len(item['offers'])
                     # pick the first offer
@@ -212,7 +216,7 @@ def get_resistor(mpn):
                             price1000 = price[1]
 
     # print str(mpn[0]) + ',' + rMPN + ',' + Manufacturer + ',' + str(price1000) + ',' + str(qty_stock)
-    return mpn[0],rMPN,Manufacturer,nsellers,supplier,price1000,qty_stock
+    return mpn[0],rMPN,Manufacturer,nsellers,supplier,price1000,qty_stock,case_package,power_rating,resistance,resistance_tol
 
     # add a delay for rate limiting
     time.sleep(0.3)
@@ -221,13 +225,13 @@ def get_all_res(pak_size):
     # queries all 1% resistors with the given size
     # first validate the input package size
     valid_sizes = ['0075','0100','0201','0402','0603','0805','1206','1210','1218','2010','2512']
-    if (pak_size in valid_sizes):
+    if pak_size in valid_sizes:
         f = open('r' + pak_size + '.csv', 'w')
         mpnlist = gen_mpns('RC' + pak_size + 'FR-07')
         for mpn in mpnlist:
             res = get_resistor(mpn)
             print res
-            if (res[1] != 'notfound'):
+            if res[1] != 'notfound':
                 for field in res:
                     f.write(str(field) + ',')
                 f.write('\n')
@@ -237,8 +241,14 @@ def get_all_res(pak_size):
         print pak_size + 'is an invalid package size !!!'
 
 
-get_all_res('0201')
-get_all_res('0402')
-get_all_res('0603')
-get_all_res('0805')
-get_all_res('1206')
+print 'getting resistor'
+r_req = get_resistor([0.0,'RC0603FR-070RL'])
+print r_req
+print r_req[9]
+print r_req[10]
+
+# get_all_res('0201')
+# get_all_res('0402')
+# get_all_res('0603')
+# get_all_res('0805')
+# get_all_res('1206')
