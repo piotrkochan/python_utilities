@@ -1,0 +1,105 @@
+import json
+import urllib
+
+url = "http://octopart.com/api/v3/parts/search"
+
+# NOTE: Use your API key here (https://octopart.com/api/register)
+url += "?apikey=1b1109c0"
+
+
+
+valid_capvals = ['1.00E-13','1.20E-13','1.50E-13','1.80E-13','2.20E-13','2.70E-13','3.30E-13','3.90E-13','4.70E-13','5.60E-13','6.80E-13','8.20E-13',\
+                 '1.00E-12','1.20E-12','1.50E-12','1.80E-12','2.20E-12','2.70E-12','3.30E-12','3.90E-12','4.70E-12','5.60E-12','6.80E-12','8.20E-12',\
+                 '1.00E-11','1.20E-11','1.50E-11','1.80E-11','2.20E-11','2.70E-11','3.30E-11','3.90E-11','4.70E-11','5.60E-11','6.80E-11','8.20E-11',\
+                 '1.00E-10','1.20E-10','1.50E-10','1.80E-10','2.20E-10','2.70E-10','3.30E-10','3.90E-10','4.70E-10','5.60E-10','6.80E-10','8.20E-10',\
+                 '1.00E-09','1.20E-09','1.50E-09','1.80E-09','2.20E-09','2.70E-09','3.30E-09','3.90E-09','4.70E-09','5.60E-09','6.80E-09','8.20E-09',\
+                 '1.00E-08','1.20E-08','1.50E-08','1.80E-08','2.20E-08','2.70E-08','3.30E-08','3.90E-08','4.70E-08','5.60E-08','6.80E-08','8.20E-08',\
+                 '1.00E-07','1.20E-07','1.50E-07','1.80E-07','2.20E-07','2.70E-07','3.30E-07','3.90E-07','4.70E-07','5.60E-07','6.80E-07','8.20E-07',\
+                 '1.00E-06','1.20E-06','1.50E-06','1.80E-06','2.20E-06','2.70E-06','3.30E-06','3.90E-06','4.70E-06','5.60E-06','6.80E-06','8.20E-06',\
+                 '1.00E-05','1.20E-05','1.50E-05','1.80E-05','2.20E-05','2.70E-05','3.30E-05','3.90E-05','4.70E-05','5.60E-05','6.80E-05','8.20E-05']
+
+valid_dielec = ['X5R','X7R','C0G/NP0']
+valid_brand = 'Yageo'
+valid_packsize = ['0201','0402','0603','0805','1206','1812','1808']
+
+
+def get_caps(capacitance):
+    # this function returns a list of ceramic capacitors of require capacitance
+
+
+    args = [
+        # ('q', 'CC0402KRX7R7BB104'),
+        # ('filter[fields][mpn][]', 'CC0402KRX7R7BB104'),
+        # ('filter[fields][brand.name][]', 'KEMET'),
+        # ('filter[fields][brand.name][]', 'Samsung'),
+        ('filter[fields][brand.name][]', 'Yageo'),
+        # ('filter[fields][specs.resistance.value][]', '10500'),
+        ('filter[fields][specs.capacitance.value][]', '1.00E-12'),
+        # ('filter[fields][specs.capacitance_tolerance.value][]', u'\u00b15%'.encode('utf-8')),
+        # ('filter[fields][offers.seller.name][]', 'Digi-Key'),
+        ('filter[fields][specs.pin_count.value][]', '2'),
+        # ('filter[fields][offers.packaging][]', 'Tape & Reel'),
+        # ('filter[fields][specs.case_package.value][]', '0805'),
+        # ('filter[fields][specs.dielectric_characteristic.value][]', 'X7R'),
+        # ('filter[fields][specs.voltage_rating_dc.value][]', '50'),
+        # ('filter[fields][specs.packaging.value][]', 'Tape & Reel (TR)'),
+        # ('filter[fields][specs.lead_free_status.values][]', 'Lead Free'),
+        # ('filter[fields][specs.rohs_status.value][]', 'Compliant'),
+        # ('filter[fields][specs.mounting_style.value][]', 'Surface Mount'),
+        # ('filter[fields][specs.pin_count.value][]', '2'),
+        ('include[]','specs'),
+        ('start', 0),
+        ('limit', 50)
+        ]
+
+
+url += '&' + urllib.urlencode(args)
+
+data = urllib.urlopen(url).read()
+search_response = json.loads(data)
+
+# print number of hits
+print search_response['hits']
+
+# print results
+for result in search_response['results']:
+    part = result['item']
+
+   # print matched part
+
+    # if 'capacitance_tolerance' in part['specs']:
+    #     print "%s - %s - %s - %s" % (part['brand']['name'], part['mpn'],part['specs']['capacitance_tolerance']['value'], part['offers'][0]['seller']['name'])
+    # else:
+    #     print "%s - %s - %s" % (part['brand']['name'], part['mpn'], part['offers'][0]['seller']['name'])
+
+    if 'case_package' in part['specs']:
+        case_package = part['specs']['case_package']['value'][0]
+    else:
+        case_package = '-1'
+
+    if 'capacitance_tolerance' in part['specs']:
+        tolerance = part['specs']['capacitance_tolerance']['value']
+    else:
+        tolerance = '-1'
+
+    price = '-1'
+
+    for offer in part['offers']:
+        # print offer['packaging']
+        if offer['packaging'] == 'Tape & Reel':
+            # print offer['prices'].keys()
+            if 'USD' in offer['prices']:
+                for usdprice in offer['prices']['USD']:
+                    # print usdprice
+                    if (usdprice[0] > 2000):
+                        price = str(float(usdprice[1]) * 100)
+
+
+    print "%s - %s - %s - %s - %s - %s - %s - %s" % (
+        part['brand']['name'], part['mpn'], tolerance,
+        part['offers'][0]['seller']['name'], case_package, part['specs']['dielectric_characteristic']['value'],
+        price, part['specs']['voltage_rating_dc']['value'])
+    # print json.dumps(part, indent=4, sort_keys=True)
+
+
+# print json.dumps(search_response, indent=4, sort_keys=True)
