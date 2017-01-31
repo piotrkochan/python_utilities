@@ -103,10 +103,12 @@ def gen_cell_dcm(res_props):
 
 
 ####################################################################################
-# create resistors.lib
+# create lib
+
+filename = 'res_smd'
 
 try:
-    f = open('resistors.lib', 'w')
+    f = open(filename + '.lib', 'w')
 except:
     print 'Can\'t open resistors.lib for writing\n'
     sys.exit(0)
@@ -134,10 +136,10 @@ f.write('#\n#End Library')
 f.close()
 
 ####################################################################################
-# create resistors.dcm
+# create dcm
 
 try:
-    f = open('resistors.dcm', 'w')
+    f = open(filename + '.dcm', 'w')
 except:
     print 'Can\'t open resistors.dcm for writing\n'
     sys.exit(0)

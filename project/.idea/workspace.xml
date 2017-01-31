@@ -65,11 +65,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gen_kilib_cap.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="gen_kilib_cap.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/gen_kilib_cap/gen_kilib_cap.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="554">
-              <caret line="121" column="42" lean-forward="false" selection-start-line="121" selection-start-column="42" selection-end-line="121" selection-end-column="42" />
+            <state relative-caret-position="344">
+              <caret line="107" column="9" lean-forward="true" selection-start-line="107" selection-start-column="9" selection-end-line="107" selection-end-column="9" />
               <folding>
                 <element signature="e#106#116#0" expanded="true" />
                 <element signature="e#528#1395#0" expanded="false" />
@@ -78,11 +78,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gen_kilib_res.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="gen_kilib_res.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/gen_kilib_res/gen_kilib_res.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
-              <caret line="94" column="19" lean-forward="true" selection-start-line="94" selection-start-column="19" selection-end-line="94" selection-end-column="19" />
+            <state relative-caret-position="269">
+              <caret line="141" column="32" lean-forward="true" selection-start-line="141" selection-start-column="32" selection-end-line="141" selection-end-column="32" />
               <folding>
                 <element signature="e#106#116#0" expanded="true" />
               </folding>
@@ -122,12 +122,12 @@
       <list>
         <option value="$PROJECT_DIR$/scripts/yaego_scan.py" />
         <option value="$PROJECT_DIR$/scripts/mine_res/yaego_scan.py" />
-        <option value="$PROJECT_DIR$/scripts/gen_kilib_res/gen_kilib_res.py" />
         <option value="$PROJECT_DIR$/scripts/mine_res/get_resistors.py" />
         <option value="$PROJECT_DIR$/scripts/dump_mpn_json.py" />
         <option value="$PROJECT_DIR$/scripts/mine_caps/get_caps.py" />
         <option value="$PROJECT_DIR$/scripts/mine_caps/refine_caps.py" />
         <option value="$PROJECT_DIR$/scripts/gen_kilib_cap/gen_kilib_cap.py" />
+        <option value="$PROJECT_DIR$/scripts/gen_kilib_res/gen_kilib_res.py" />
       </list>
     </option>
   </component>
@@ -202,6 +202,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="gen_kilib_res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="project" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="gen_kilib_cap" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -213,24 +231,7 @@
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager" selected="Python.gen_kilib_cap">
-    <configuration default="false" name="get_resistors" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts/mine_res" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="project" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/mine_res/get_resistors.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.gen_kilib_res">
     <configuration default="false" name="get_caps" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -295,6 +296,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="project" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/mine_caps/refine_caps.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="gen_kilib_res" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts/gen_kilib_res" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="project" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/gen_kilib_res/gen_kilib_res.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -434,19 +452,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.get_resistors" />
-      <item index="1" class="java.lang.String" itemvalue="Python.get_caps" />
-      <item index="2" class="java.lang.String" itemvalue="Python.dump_mpn_json" />
-      <item index="3" class="java.lang.String" itemvalue="Python.gen_kilib_cap" />
-      <item index="4" class="java.lang.String" itemvalue="Python.refine_caps" />
+      <item index="0" class="java.lang.String" itemvalue="Python.get_caps" />
+      <item index="1" class="java.lang.String" itemvalue="Python.dump_mpn_json" />
+      <item index="2" class="java.lang.String" itemvalue="Python.gen_kilib_cap" />
+      <item index="3" class="java.lang.String" itemvalue="Python.refine_caps" />
+      <item index="4" class="java.lang.String" itemvalue="Python.gen_kilib_res" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.gen_kilib_cap" />
-        <item index="1" class="java.lang.String" itemvalue="Python.refine_caps" />
-        <item index="2" class="java.lang.String" itemvalue="Python.get_caps" />
-        <item index="3" class="java.lang.String" itemvalue="Python.dump_mpn_json" />
-        <item index="4" class="java.lang.String" itemvalue="Python.get_resistors" />
+        <item index="0" class="java.lang.String" itemvalue="Python.gen_kilib_res" />
+        <item index="1" class="java.lang.String" itemvalue="Python.gen_kilib_cap" />
+        <item index="2" class="java.lang.String" itemvalue="Python.refine_caps" />
+        <item index="3" class="java.lang.String" itemvalue="Python.get_caps" />
+        <item index="4" class="java.lang.String" itemvalue="Python.dump_mpn_json" />
       </list>
     </recent_temporary>
   </component>
@@ -530,16 +548,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/gen_kilib_res/gen_kilib_res.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="94" column="19" lean-forward="true" selection-start-line="94" selection-start-column="19" selection-end-line="94" selection-end-column="19" />
-          <folding>
-            <element signature="e#106#116#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/mine_res/yaego_scan.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -592,11 +600,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/gen_kilib_cap/gen_kilib_cap.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="554">
-          <caret line="121" column="42" lean-forward="false" selection-start-line="121" selection-start-column="42" selection-end-line="121" selection-end-column="42" />
+        <state relative-caret-position="344">
+          <caret line="107" column="9" lean-forward="true" selection-start-line="107" selection-start-column="9" selection-end-line="107" selection-end-column="9" />
           <folding>
             <element signature="e#106#116#0" expanded="true" />
             <element signature="e#528#1395#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/gen_kilib_res/gen_kilib_res.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="141" column="32" lean-forward="true" selection-start-line="141" selection-start-column="32" selection-end-line="141" selection-end-column="32" />
+          <folding>
+            <element signature="e#106#116#0" expanded="true" />
           </folding>
         </state>
       </provider>
