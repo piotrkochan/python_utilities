@@ -58,7 +58,7 @@ def gen_cell_lib(res_props):
     outstring = '#\n# ' + res_props[1] + '\n#\n'
     outstring += 'DEF ' + res_props[1] + ' R 0 10 N N 1 F N\n'
     outstring += 'F0 "R" 30 20 50 H V L CNN\n'
-    outstring += 'F1 "' + res_props[1] + '" 30 -40 28 H V L CNN\n'
+    outstring += 'F1 "' + res_props[1] + '" 40 -40 15 H V L CNN\n'
     outstring += 'F2 "Main:RESC' + res_props[7] + '" 100 -75 10 H I C CNN\n'
     outstring += 'F3 "" 30 20 50 H V C CNN\n'
     outstring += 'F4 "' + res_props[2] + '" -50 80 28 H V R CNN "Manufacturer"\n'

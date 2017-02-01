@@ -64,7 +64,7 @@ def gen_cell_lib(cap_props):
 
     outstring = '#\n# ' + mpn + '\n#\n'
     outstring += 'DEF ' + mpn + ' C 0 10 N N 1 F N\n'
-    outstring += 'F0 "C" 30 20 50 H V L CNN\n'
+    outstring += 'F0 "C" 80 10 50 H V L CNN\n'
     outstring += 'F1 "' + mpn + '" 20 -50 15 H V L CNN\n'
     outstring += 'F2 "Main:CAPC' + pak_size + '" 140 80 20 H V C CNN\n'
     outstring += 'F3 "" 30 20 50 H V C CNN\n'
