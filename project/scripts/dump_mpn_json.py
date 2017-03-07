@@ -8,7 +8,7 @@ url += "?apikey=1b1109c0"
 
 args = [
     # ('q', 'resistor'),
-    ('filter[fields][mpn][]', 'CC0603JRNPO9BN120'),
+    ('filter[fields][mpn][]', 'CL21A475KLCLQNC'),
     # ('filter[fields][offers.seller.name][]', 'Digi-Key'),
     ('include[]','specs'),
     ('start', 0),

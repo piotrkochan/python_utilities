@@ -73,7 +73,7 @@ def gen_cell_lib(cap_props):
     outstring += 'F6 "STUFF" -20 -90 20 H V R CNN "SKU"\n'
     outstring += 'F7 "' + val + '" -40 50 20 H V R CNN "C"\n'
     outstring += 'F8 "' + ctol + '" -80 10 20 H V R CNN "Tol"\n'
-    outstring += 'F9 "' + vrate + '" -90 -20 20 H V R CNN "Vmax"\n'
+    outstring += 'F9 "' + vrate + 'V" -90 -20 20 H V R CNN "Vmax"\n'
     outstring += 'F10 "' + dielec + '" -20 -50 20 H V R CNN "Type"\n'
     outstring += '$FPLIST\n'
     outstring += ' Capacitor_*\n'
@@ -119,7 +119,7 @@ def gen_cell_dcm(cap_props):
     else:
         pricemark = '$$$$ '
 
-    outstring += 'D ' + common + pricemark + val + ' ' + pak_size + ' ' + dielec + ' ' + ctol + ' ' + vrate + '\n'
+    outstring += 'D ' + common + pricemark + val + ' ' + pak_size + ' ' + dielec + ' ' + ctol + ' ' + vrate + 'V\n'
     outstring += '$ENDCMP\n'
 
     return outstring

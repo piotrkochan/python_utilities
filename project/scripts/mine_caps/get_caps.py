@@ -20,6 +20,7 @@ pref_brand = 'KEMET'
 # pref_brand = "Samsung"
 valid_packsize = ['0201','0402','0603','0805','1206','1210','1410','1808','1812','2010','2020','2220','2225','2512','2520','3640']
 
+extra_capacitors = ['CL21A475KLCLQNC','UMK316AB7475KL-T','GRM21BR60J476ME15K','GRM31CR60J107ME39K']
 
 def get_caps(capacitance):
     # this function returns a list of ceramic capacitors of require capacitance
@@ -105,9 +106,98 @@ def get_caps(capacitance):
                         if (usdprice[0] > 2000):
                             price_cent = str(float(usdprice[1]) * 100)
 
+        if True:
+            # if pack_size in valid_packsize:
+            #     if dielec_rate in valid_dielec:
+            outline = [capval, pack_size, dielec_rate, voltage_rate, ctol, mpn, brand, price_cent,stockqty]
+            outlist.append(outline)
+        # print json.dumps(part, indent=4, sort_keys=True)
 
-        # check validity of fields before appending output to list
-        # if (voltage_rate != '-1') & (ctol != '-1') & (price_cent != '-1'):
+    time.sleep(0.5)
+    return outlist
+
+def get_cap_mpn(_mpn):
+    # this function returns a list of ceramic capacitors of require capacitance
+
+    url = "http://octopart.com/api/v3/parts/search"
+
+    # NOTE: Use your API key here (https://octopart.com/api/register)
+    url += "?apikey=1b1109c0"
+
+    args = [
+        ('filter[fields][mpn][]', _mpn),
+        ('filter[fields][offers.seller.name][]', 'Digi-Key'),
+        # ('filter[fields][specs.packaging.value][]', 'Tape & Reel (TR)'),
+        ('include[]','specs'),
+        ('start', 0),
+        ('limit', 100)
+        ]
+
+    print 'Querying ' + str(_mpn) + ' ...'
+
+    url += '&' + urllib.urlencode(args)
+
+    gotresponse = False
+
+    while (gotresponse == False):
+        try:
+            data = urllib.urlopen(url).read()
+            search_response = json.loads(data)
+        except:
+            'Error querying !!'
+            gotresponse = True
+        if 'message' in search_response:
+            # received a message, print it out
+            print search_response['message']
+        if 'results' not in search_response:
+            # add a delay for rate limiting
+            time.sleep(0.3)
+        else:
+            gotresponse = True
+
+
+    print 'Got ' + str(search_response['hits']) + ' hits!'
+
+    outlist = []
+
+    # get parameters
+    for result in search_response['results']:
+        part = result['item']
+
+        # initialize all fields
+        capval = part['specs']['capacitance']['display_value']
+        pack_size = '-1'
+        dielec_rate = '-1'
+        voltage_rate = '1-'
+        ctol = '-1'
+        mpn = part['mpn']
+        brand = part['brand']['name']
+        price_cent = '-1'
+        stockqty = '-1'
+
+        if 'case_package' in part['specs']:
+            pack_size = part['specs']['case_package']['value'][0]
+
+        if 'dielectric_characteristic' in part['specs']:
+            dielec_rate = part['specs']['dielectric_characteristic']['display_value']
+
+        if 'voltage_rating_dc' in part['specs']:
+            voltage_rate = part['specs']['voltage_rating_dc']['value']
+
+        if 'capacitance_tolerance' in part['specs']:
+            ctol = part['specs']['capacitance_tolerance']['value']
+
+
+        for offer in part['offers']:
+            if offer['seller']['name'] == 'Digi-Key':
+                stockqty = str(offer['in_stock_quantity'])
+            if offer['packaging'] == 'Tape & Reel':
+                if 'USD' in offer['prices']:
+                    for usdprice in offer['prices']['USD']:
+                        # print usdprice
+                        if (usdprice[0] > 2000):
+                            price_cent = str(float(usdprice[1]) * 100)
+
         if True:
             # if pack_size in valid_packsize:
             #     if dielec_rate in valid_dielec:
@@ -128,6 +218,17 @@ except:
 
 for capval in valid_capvals:
     olist = get_caps(capval)
+    for cap in olist:
+        for param in cap:
+            if type(param) is list:
+                f.write(param[0].encode('utf-8') + ',')
+            else:
+                f.write(param.encode('utf-8') + ',')
+        f.write('\n')
+
+# append extra special part numbers
+for extra_cap in extra_capacitors:
+    olist = get_cap_mpn(extra_cap)
     for cap in olist:
         for param in cap:
             if type(param) is list:
